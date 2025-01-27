@@ -2,11 +2,12 @@ from azure.identity import ClientSecretCredential
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.subscription import SubscriptionClient
 from azure.core.exceptions import AzureError
-
-# Service Principal Credentials
-CLIENT_ID = "264791ae-ca1f-4828-9212-166163b8127c"  # appId from the Service Principal
-CLIENT_SECRET = "eGA8Q~vUggc_8ai7ZaobwE3dERisYWQ5zfyMnaR."  # password from the Service Principal
-TENANT_ID = "720edb1f-5c4e-4043-8141-214a63a7ead5"  # tenant from the Service Principal
+import os
+from dotenv import load_dotenv
+load_dotenv()
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+TENANT_ID = os.getenv("TENANT_ID")
 
 
 def perform_operation(vm_name: str, operation: str, subscription: str):
