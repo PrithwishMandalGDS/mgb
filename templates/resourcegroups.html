@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Virtual Machines{% endblock %}
+
+{% block content %}
+{% for vm_name, state in name_list.items() %}
+    <div class="resource-card">
+        <h2 class="resource-title">{{ vm_name }}</h2>
+		<p class="card-info">Instance State: {{ state }}</p>
+        {% if state == 'Running' %}
+            <a href="{{ url_for('stop_vm', vm=vm_name) }}" class="explore-link">Stop</a>
+        {% else %}
+            <a href="{{ url_for('start_vm', vm=vm_name) }}" class="explore-link">Start</a>
+        {% endif %}
+    </div>
+{% endfor %}
+
+{% endblock %}

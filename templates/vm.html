@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Resource Groups{% endblock %}
+
+{% block content %}
+<h1>Virtual Machines</h1>
+<table class="vm-table">
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>Size</th>
+    <th>Region</th>
+    <th>Status</th>
+    <th>IP Address</th>
+    </tr>
+</thead>
+    <tbody>
+    {% if vm_details %}
+        {% for name, details in vm_details.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ details.Size }}</td>
+                <td>{{ details.Region }}</td>
+                <td>{{ details.Status }}</td>
+                <td>{{ details.PrivateIP }}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="6">No virtual machines found</td>
+        </tr>
+    {% endif %}
+    </tbody>
+
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".btn-details").forEach(button => {
+            button.addEventListener("click", async (event) => {
+                const vmName = event.target.dataset.vm;
+                const action = event.target.dataset.action;
+                const rgName = event.target.dataset.rg;
+
+                try {
+                    const response = await fetch(`/api/vm/${rgName}/${vmName}/${action}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+
+                        // Update status and button dynamically
+                        document.getElementById(`status-${vmName}`).innerText = data.status;
+                        event.target.innerText = data.next_action_text;
+                        event.target.dataset.action = data.next_action; // Update button action
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.message}`);
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

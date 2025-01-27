@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscriptions{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="vm-control-card">
+        <h2 class="vm-control-title">Start VM</h2>
+        <form class="vm-control-form" action="{{ url_for('start_vm') }}" method="post">
+            <label for="vmSelectStart">Select VM:</label>
+            <select id="vmSelectStart" name="vm_name">
+                {% for vm in stopped_vms %}
+                <option value="{{ vm }}">{{ vm }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-control start">Start VM</button>
+        </form>
+    </div>
+
+    <div class="vm-control-card">
+        <h2 class="vm-control-title">Stop VM</h2>
+        <form class="vm-control-form" action="{{ url_for('stop_vm') }}" method="post">
+            <label for="vmSelectStop">Select VM:</label>
+            <select id="vmSelectStop" name="vm_name">
+                {% for vm in running_vms %}
+                <option value="{{ vm }}">{{ vm }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-control stop">Stop VM</button>
+        </form>
+    </div>
+</div>
+  
+
+{% endblock %}

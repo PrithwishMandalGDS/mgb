@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Subscriptions{% endblock %}
+
+{% block content %}
+{% for researcher, vm_count in output_dicts.items() %}
+    <div class="card">
+        <div class="card-content">
+            <h2 class="card-title">{{ researcher }}</h2>
+            <p class="card-info">Virtual Machines: {{ vm_count }}</p>
+            <a href="{{ url_for('resourcegroups', researcher_name=researcher) }}" class="explore-link">Explore</a>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}
